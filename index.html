@@ -85,10 +85,6 @@
         .form-status.success { display: block; background: rgba(16, 185, 129, 0.15); color: var(--clr-success); border: 1px solid var(--clr-success); }
         .form-status.error { display: block; background: rgba(220, 38, 38, 0.15); color: var(--clr-video); border: 1px solid var(--clr-video); }
 
-        .social-row { display: flex; justify-content: center; gap: 1.5rem; margin-top: 2rem; font-size: 1.2rem; }
-        .social-row a { color: var(--text-muted); text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; transition: color 0.3s; }
-        .social-row a:hover { color: var(--clr-canva); }
-
         footer { text-align: center; padding: 2.5rem; font-size: 0.9rem; color: var(--text-muted); border-top: 1px solid #1a1a1a; margin-top: 5rem; }
         
         @media (max-width: 768px) {
@@ -257,103 +253,83 @@
                     <textarea id="taskDetails" class="form-control" placeholder="Describe formatting styles, page count, or specific graphic design assets needed..." required></textarea>
                 </div>
                 
-                <button type="submit" class="btn" style="width: 100%; justify-content: center;" id="submitBtn">
-                    <i data-feather="lock"></i> Send Secure Submission
+                <button type="submit" class="btn" style="width: 100%; justify-content: center;">
+                    <i data-feather="send"></i> Dispatch Secure Task
                 </button>
                 
-                <div id="statusBox" class="form-status"></div>
+                <div id="statusMessage" class="form-status"></div>
             </form>
-            
-            <div class="social-row">
-                <a href="https://facebook.com/nepalassistpro" target="_blank"><i data-feather="facebook"></i> /nepalassistpro</a>
-                <a href="https://instagram.com/nepalassistpro" target="_blank"><i data-feather="instagram"></i> /nepalassistpro</a>
-            </div>
         </div>
     </section>
 
     <footer>
-        <p>&copy; 2026 Nepal Assist Pro. Secure API Architecture Data Streams. Payments accepted via eSewa / Khalti.</p>
+        <p>&copy; 2026 Nepal Assist Pro. All rights reserved. Providing affordable digital support across Nepal.</p>
     </footer>
 
     <script>
-        // Initialize structural interface icons
+        // Initialize Vector Icons
         feather.replace();
 
-        // -------------------------------------------------------------
-        // SECURE EMAIL API CONFIGURATION (EmailJS Backend Driver)
-        // -------------------------------------------------------------
-        // Step 1: Initialize account with your unique Public API Key
+        // Initialize EmailJS (Replace 'YOUR_PUBLIC_KEY' with your actual EmailJS Public Key)
         (function() {
-            emailjs.init({
-                publicKey: "agiVU4v6Dan2ramQN", 
-            });
+            emailjs.init("YOUR_PUBLIC_KEY");
         })();
 
-        document.getElementById('secureTaskForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            
-            const submitBtn = document.getElementById('submitBtn');
-            const statusBox = document.getElementById('statusBox');
-            
-            // Toggle processing interface state safely
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = `<i data-feather="loader" class="spin"></i> Processing Secure Data Transmission...`;
-            feather.replace();
-            
-            statusBox.className = "form-status";
-            statusBox.style.display = "none";
-
-            // Sanitize and package internal form input payloads safely
-            const templateParams = {
-                from_name: document.getElementById('clientName').value.replace(/</g, "&lt;").replace(/>/g, "&gt;"),
-                reply_to: document.getElementById('clientEmail').value,
-                service_type: document.getElementById('serviceCategory').value,
-                project_specifications: document.getElementById('taskDetails').value.replace(/</g, "&lt;").replace(/>/g, "&gt;")
-            };
-
-            // Step 2: Trigger secure third-party communication routing API
-            emailjs.send('service_by3nyse', 'template_9slp65m', templateParams)
-                .then(function(response) {
-                    statusBox.innerHTML = "✓ Submission Successful! Your data has been processed securely. We will email you back within 6-48 hours.";
-                    statusBox.className = "form-status success";
-                    document.getElementById('secureTaskForm').reset();
-                }, function(error) {
-                    statusBox.innerHTML = "✕ Transmission Security Error. Please try again or reach out through our social media platforms.";
-                    statusBox.className = "form-status error";
-                    console.error("API Security Log:", error);
-                })
-                .finally(function() {
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = `<i data-feather="lock"></i> Send Secure Submission`;
-                    feather.replace();
-                });
-        });
-
-        // Portfolio real-time client filter mechanisms
+        // Dynamic Filtering Engine for Showcase Grid
         function filterSelection(category) {
-            var items = document.getElementsByClassName("filter-project");
-            var buttons = document.getElementsByClassName("filter-btn");
+            const items = document.getElementsByClassName('filter-project');
+            const buttons = document.getElementsByClassName('filter-btn');
             
-            for (var i = 0; i < buttons.length; i++) {
-                if (buttons[i].textContent.toLowerCase().includes(category) || (category === 'all' && i === 0)) {
-                    buttons[i].classList.add("active");
+            // Handle Button Active States
+            for (let btn of buttons) {
+                if (btn.getAttribute('onclick').includes(category)) {
+                    btn.classList.add('active');
                 } else {
-                    buttons[i].classList.remove("active");
+                    btn.classList.remove('active');
                 }
             }
 
-            for (var i = 0; i < items.length; i++) {
-                if (category === "all") {
-                    items[i].style.display = "block";
+            // Filter Grid Cards
+            for (let item of items) {
+                if (category === 'all') {
+                    item.style.display = 'block';
+                } else if (item.classList.contains(category)) {
+                    item.style.display = 'block';
                 } else {
-                    if (items[i].classList.contains(category)) {
-                        items[i].style.display = "block";
-                    } else {
-                        items[i].style.display = "none";
-                    }
+                    item.style.display = 'none';
                 }
             }
         }
+
+        // Form Submit Handler
+        document.getElementById('secureTaskForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const statusMessage = document.getElementById('statusMessage');
+            
+            statusMessage.className = "form-status";
+            statusMessage.style.display = "block";
+            statusMessage.innerText = "Encrypting data and sending transmission...";
+
+            // Prepare Parameters mapping to your EmailJS Template fields
+            const templateParams = {
+                from_name: document.getElementById('clientName').value,
+                reply_to: document.getElementById('clientEmail').value,
+                category: document.getElementById('serviceCategory').value,
+                details: document.getElementById('taskDetails').value
+            };
+
+            // Replace 'YOUR_SERVICE_ID' and 'YOUR_TEMPLATE_ID' with your dashboard identifiers
+            emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
+                .then(function() {
+                    statusMessage.classList.add('success');
+                    statusMessage.innerText = "Success! Your task specifications have been securely transmitted.";
+                    document.getElementById('secureTaskForm').reset();
+                }, function(error) {
+                    statusMessage.classList.add('error');
+                    statusMessage.innerText = "Transmission failure. Please review your active network connection.";
+                    console.error('EmailJS Error:', error);
+                });
+        });
     </script>
 </body>
 </html>
