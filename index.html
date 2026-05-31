@@ -270,7 +270,7 @@
         // Step 1: Initialize account with your unique Public API Key
         (function() {
             emailjs.init({
-                publicKey: "YOUR_EMAILJS_PUBLIC_KEY", 
+                publicKey: "agiVU4v6Dan2ramQN", 
             });
         })();
 
@@ -297,7 +297,7 @@
             };
 
             // Step 2: Trigger secure third-party communication routing API
-            emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
+            emailjs.send('service_by3nyse', 'template_9slp65m', templateParams)
                 .then(function(response) {
                     statusBox.innerHTML = "✓ Submission Successful! Your data has been processed securely. We will email you back within 6-48 hours.";
                     statusBox.className = "form-status success";
